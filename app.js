@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
           submitBtn.disabled = false;
           submitBtn.textContent = 'Submit consultation brief';
           notesFeedback.className = 'form-feedback is-success';
-          notesFeedback.textContent = 'Consultation request recorded for review by David Alex and the development team.';
+          notesFeedback.textContent = 'Consultation request recorded for review by our development team.';
           consultationForm.reset();
           setTimeout(() => {
             closeDialog();
