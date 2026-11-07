@@ -102,8 +102,14 @@
   --container-max-width: 1360px;
   --container-gutter: var(--spacing-300);
 
-  /* Motion Curves & Durations (B7) */
+  /* Motion Curves & Durations (B7 & Architectural Motion) */
   --ease-base: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-smooth: cubic-bezier(0.65, 0, 0.35, 1);
   --duration-layout: 500ms;
   --duration-interaction: 300ms;
+  --duration-reveal: 700ms;
+  --duration-reveal-fast: 500ms;
+  --duration-entrance: 800ms;
+  --duration-stagger: 90ms;
 }

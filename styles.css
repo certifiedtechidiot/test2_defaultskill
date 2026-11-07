@@ -17,6 +17,7 @@ html, body {
   width: 100%;
   min-height: 100%;
   overflow-x: clip;
+  overscroll-behavior: none;
   background-color: var(--color-bg-base);
   color: var(--color-text-primary);
   font-family: var(--font-primary);
@@ -26,6 +27,42 @@ html, body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   caret-color: var(--color-text-accent);
+}
+
+/* Sleek Architectural Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-dim);
+}
+
+/* Lenis Smooth Scroll Foundation */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
 
 ::selection {
@@ -938,6 +975,46 @@ ul, ol {
   display: grid;
   place-items: center;
   flex-shrink: 0;
+  transition-property: transform;
+  transition-duration: var(--duration-interaction);
+  transition-timing-function: var(--ease-base);
+}
+
+.hud-discover-btn:hover .hud-discover-arrow {
+  transform: translate(2px, -2px);
+}
+
+.hud-discover-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-primary:active,
+.btn-secondary:active,
+.hud-phone-pill:active,
+.hud-social-btn:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================================
+   Architectural Motion Suite (Compositor Only / 60fps)
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Progressive Scroll-Driven Reveal System */
+  .js-enabled .reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(28px);
+    transition-property: opacity, transform;
+    transition-duration: var(--duration-reveal);
+    transition-timing-function: var(--ease-out-expo);
+    transition-delay: calc(var(--stagger, 0) * var(--duration-stagger));
+    will-change: opacity, transform;
+  }
+
+  .js-enabled .reveal-on-scroll.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ==========================================================================
@@ -1668,7 +1745,10 @@ ul, ol {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  .tagline-word {
+  .tagline-word,
+  .reveal-on-scroll {
     opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }

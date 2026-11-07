@@ -5,6 +5,42 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // 0. Prefers Reduced Motion & Lenis Momentum Scrolling
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let lenisInstance = null;
+
+  if (!prefersReducedMotion && typeof Lenis !== 'undefined') {
+    lenisInstance = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
+    });
+
+    function raf(time) {
+      lenisInstance.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Smooth Anchor Scrolling with Lenis
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', (e) => {
+        const targetId = anchor.getAttribute('href');
+        if (targetId && targetId !== '#') {
+          const targetEl = document.querySelector(targetId);
+          if (targetEl) {
+            e.preventDefault();
+            lenisInstance.scrollTo(targetEl, { offset: 0, duration: 1.1 });
+          }
+        }
+      });
+    });
+  }
+
   // 1. Mobile Menu Drawer
   const mobileToggle = document.querySelector('.nav-mobile-toggle');
   const mobileDrawer = document.getElementById('mobileDrawer');
@@ -17,6 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
       mobileToggle.setAttribute('aria-expanded', String(open));
       mobileDrawer.setAttribute('aria-hidden', String(!open));
       document.body.style.overflow = open ? 'hidden' : '';
+      if (lenisInstance) {
+        if (open) lenisInstance.stop();
+        else lenisInstance.start();
+      }
     };
 
     mobileToggle.addEventListener('click', () => toggleMenu());
@@ -61,12 +101,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. Tagline Reveal Section (Mandatory B11: Word-by-word on Scroll)
   const taglineWords = document.querySelectorAll('.tagline-word');
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (prefersReducedMotion) {
     taglineWords.forEach(word => word.classList.add('is-active'));
   } else if (taglineWords.length && 'IntersectionObserver' in window) {
-    let delayCounter = 0;
     const wordObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -88,6 +126,29 @@ document.addEventListener('DOMContentLoaded', () => {
     taglineWords.forEach(word => word.classList.add('is-active'));
   }
 
+  // 3b. Progressive Scroll-Driven Reveal Observer
+  const revealElements = document.querySelectorAll('.reveal-on-scroll');
+
+  if (prefersReducedMotion) {
+    revealElements.forEach(el => el.classList.add('is-revealed'));
+  } else if (revealElements.length && 'IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.12
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  } else {
+    revealElements.forEach(el => el.classList.add('is-revealed'));
+  }
+
   // 4. Consultation Dialog Modal Management
   const modal = document.getElementById('consultationModal');
   const openTriggers = document.querySelectorAll('.open-consultation-trigger');
@@ -101,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.classList.add('is-active');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    if (lenisInstance) lenisInstance.stop();
     const firstInput = modal.querySelector('input');
     if (firstInput) firstInput.focus();
   };
@@ -110,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.classList.remove('is-active');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    if (lenisInstance) lenisInstance.start();
     if (previousActiveElement && typeof previousActiveElement.focus === 'function') {
       previousActiveElement.focus();
     }
