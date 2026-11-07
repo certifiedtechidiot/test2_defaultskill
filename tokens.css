@@ -20,6 +20,24 @@
   --color-bg-accent-hover: #D4B991;
   --color-bg-accent-subtle: rgba(197, 168, 128, 0.12);
 
+  /* HUD & Editorial Perimeter Tokens */
+  --color-white: #FFFFFF;
+  --color-white-hover: #F0F0F2;
+  --color-black-solid: #0A0A0A;
+  --hud-overlay-gradient: linear-gradient(180deg, rgba(10, 12, 16, 0.45) 0%, rgba(10, 12, 16, 0.1) 45%, rgba(10, 12, 16, 0.65) 100%);
+  --hud-pill-bg: rgba(255, 255, 255, 0.08);
+  --hud-pill-hover: rgba(255, 255, 255, 0.20);
+  --hud-pill-border: rgba(255, 255, 255, 0.28);
+  --hud-border-hover: rgba(255, 255, 255, 0.45);
+  --hud-social-bg: rgba(15, 18, 22, 0.35);
+  --hud-social-border: rgba(255, 255, 255, 0.20);
+  --hud-card-bg: rgba(18, 20, 24, 0.38);
+  --hud-card-border: rgba(255, 255, 255, 0.22);
+  --hud-text-muted: rgba(255, 255, 255, 0.85);
+  --hud-text-faint: rgba(255, 255, 255, 0.75);
+  --hud-shadow-btn: 0 10px 30px rgba(0, 0, 0, 0.30);
+  --hud-shadow-btn-hover: 0 14px 36px rgba(0, 0, 0, 0.40);
+
   /* Typography Colors */
   --color-text-primary: #F4F4F6;
   --color-text-secondary: #C8C8CC;
