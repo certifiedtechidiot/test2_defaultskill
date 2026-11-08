@@ -615,7 +615,7 @@ ul, ol {
 .mobile-drawer-footer {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-150);
+  gap: var(--spacing-100);
   margin-top: var(--spacing-300);
   padding-top: var(--spacing-200);
   border-top: 1px solid var(--color-border-subtle);
@@ -1350,7 +1350,8 @@ ul, ol {
   background-color: var(--color-bg-accent-subtle);
   color: var(--color-text-accent);
   border: 1px solid var(--color-border-accent);
-  padding: var(--spacing-75) var(--spacing-150);
+  padding: var(--spacing-75) var(--spacing-200);
+  line-height: 1.2;
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
@@ -1733,7 +1734,7 @@ ul, ol {
   background-color: var(--color-bg-deep);
   color: var(--color-text-accent);
   border: 1px solid var(--color-border-accent);
-  padding: var(--spacing-50) var(--spacing-150);
+  padding: var(--spacing-50) var(--spacing-100);
   border-radius: var(--radius-full);
   font-size: 13px;
   font-weight: 500;
@@ -1831,8 +1832,8 @@ ul, ol {
   }
 
   .project-modal-close {
-    top: var(--spacing-150);
-    right: var(--spacing-150);
+    top: var(--spacing-100);
+    right: var(--spacing-100);
     width: 36px;
     height: 36px;
     z-index: 20;
@@ -1868,12 +1869,12 @@ ul, ol {
 
   .project-modal-specs-grid {
     grid-template-columns: 1fr;
-    gap: var(--spacing-150);
+    gap: var(--spacing-200);
     margin-top: var(--spacing-50);
   }
 
   .project-spec-card {
-    padding: var(--spacing-150);
+    padding: var(--spacing-200);
   }
 
   .project-modal-actions {
