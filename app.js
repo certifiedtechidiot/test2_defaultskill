@@ -41,9 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 1. Mobile Menu Drawer
+  // 1. Mobile Menu Drawer (Half-Screen with Blurred Remaining Half & Close Buttons)
   const mobileToggle = document.querySelector('.nav-mobile-toggle');
   const mobileDrawer = document.getElementById('mobileDrawer');
+  const mobileDrawerBackdrop = document.getElementById('mobileDrawerBackdrop');
+  const drawerCloseTop = document.getElementById('drawerCloseTop');
+  const drawerCloseBottom = document.getElementById('drawerCloseBottom');
   const mobileLinks = document.querySelectorAll('.mobile-nav-link');
 
   if (mobileToggle && mobileDrawer) {
@@ -61,6 +64,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     mobileToggle.addEventListener('click', () => toggleMenu());
 
+    if (mobileDrawerBackdrop) {
+      mobileDrawerBackdrop.addEventListener('click', () => toggleMenu(false));
+    }
+
+    if (drawerCloseTop) {
+      drawerCloseTop.addEventListener('click', () => toggleMenu(false));
+    }
+
+    if (drawerCloseBottom) {
+      drawerCloseBottom.addEventListener('click', () => toggleMenu(false));
+    }
+
     mobileLinks.forEach(link => {
       link.addEventListener('click', () => toggleMenu(false));
     });
@@ -70,8 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleMenu(false);
       }
     });
-  }
 
+  }
   // 2. Active Section Highlighting in Floating Nav
   const sections = document.querySelectorAll('main > section[id]');
   const navLinks = document.querySelectorAll('.nav-link-item');
@@ -202,6 +217,149 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+
+  // 4b. Project Documentation Lightbox Modal Management
+  const projectData = {
+    'bel-air': {
+      title: 'The Bel-Air Ridge Residence',
+      valuation: '$18.4M',
+      specs: '14,200 sq ft, cantilever infinity pool, Bel-Air enclave',
+      status: 'Commissioned 2024',
+      image: 'assets/proj_center_hd.jpg',
+      alt: 'The Bel-Air Ridge Residence architectural villa exterior',
+      structure: 'Post-tensioned grade 80 concrete slab with dual-axis seismic dampeners.',
+      glazing: 'Triple-laminated acoustic low-iron glass walls with motorized thermal breaks.',
+      foundation: 'Deep-seated micropile caissons drilled 42 feet into bedrock strata.',
+      energy: 'Geothermal hydronic cooling paired with 48kW micro-inverter solar.'
+    },
+    'malibu': {
+      title: 'The Malibu Bluffs Villa',
+      valuation: '$24.8M',
+      specs: '11,800 sq ft, marine concrete, Pacific Coast Highway',
+      status: 'Commissioned 2025',
+      image: 'assets/val_villa_hd.jpg',
+      alt: 'The Malibu Bluffs Villa coastal architecture exterior',
+      structure: 'Sulfate-resistant monolithic marine concrete engineered for coastal salt spray.',
+      glazing: 'Hurricane-rated 18mm laminated structural curtain wall with UV reflection coating.',
+      foundation: 'Engineered grade beam tieback array keyed directly into coastal bluffs.',
+      energy: 'Desalination-integrated hydronic loops and triple-redundant solar battery reserve.'
+    },
+    'aspen': {
+      title: 'The Aspen Alpine Retreat',
+      valuation: '$16.2M',
+      specs: '9,600 sq ft, thermal mass basalt, Red Mountain Aspen',
+      status: 'In Delivery 2026',
+      image: 'assets/proj_right_hd.jpg',
+      alt: 'The Aspen Alpine Retreat alpine mountain residence exterior',
+      structure: 'Heavy timber hybrid glulam framework clad in cut volcanic thermal mass basalt.',
+      glazing: 'Argon-filled quad-pane insulated glass units rated for -30°F thermal excursions.',
+      foundation: 'Frost-heave resistant raft footing with continuous radiant perimeter warmth.',
+      energy: 'High-altitude sub-zero heat exchanger network with micro-hydro auxiliary input.'
+    }
+  };
+
+  const projectModal = document.getElementById('projectModal');
+  const projectModalBackdrop = document.getElementById('projectModalBackdrop');
+  const projectModalClose = document.getElementById('projectModalClose');
+  const projectModalTitle = document.getElementById('projectModalTitle');
+  const projectModalValuation = document.getElementById('projectModalValuation');
+  const projectModalSpecs = document.getElementById('projectModalSpecs');
+  const projectModalStatus = document.getElementById('projectModalStatus');
+  const projectModalImage = document.getElementById('projectModalImage');
+  const projectModalStructure = document.getElementById('projectModalStructure');
+  const projectModalGlazing = document.getElementById('projectModalGlazing');
+  const projectModalFoundation = document.getElementById('projectModalFoundation');
+  const projectModalEnergy = document.getElementById('projectModalEnergy');
+  const projectModalInquireBtn = document.getElementById('projectModalInquireBtn');
+  const projectViewBtns = document.querySelectorAll('.project-view-btn');
+  let previousProjectTrigger = null;
+
+  const openProjectModal = (projectId) => {
+    if (!projectModal || !projectData[projectId]) return;
+    const data = projectData[projectId];
+
+    if (projectModalTitle) projectModalTitle.textContent = data.title;
+    if (projectModalValuation) projectModalValuation.textContent = data.valuation;
+    if (projectModalSpecs) projectModalSpecs.textContent = data.specs;
+    if (projectModalStatus) projectModalStatus.textContent = data.status;
+    if (projectModalStructure) projectModalStructure.textContent = data.structure;
+    if (projectModalGlazing) projectModalGlazing.textContent = data.glazing;
+    if (projectModalFoundation) projectModalFoundation.textContent = data.foundation;
+    if (projectModalEnergy) projectModalEnergy.textContent = data.energy;
+
+    if (projectModalImage) {
+      projectModalImage.src = data.image;
+      projectModalImage.alt = data.alt || data.title;
+    }
+
+    projectModal.classList.add('is-active');
+    projectModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (lenisInstance) lenisInstance.stop();
+
+    if (projectModalClose) {
+      projectModalClose.focus();
+    }
+  };
+
+  const closeProjectModal = () => {
+    if (!projectModal) return;
+    projectModal.classList.remove('is-active');
+    projectModal.setAttribute('aria-hidden', 'true');
+    if (!modal || !modal.classList.contains('is-active')) {
+      document.body.style.overflow = '';
+      if (lenisInstance) lenisInstance.start();
+    }
+    if (previousProjectTrigger && typeof previousProjectTrigger.focus === 'function') {
+      previousProjectTrigger.focus();
+    }
+  };
+
+  projectViewBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      previousProjectTrigger = btn;
+      const pid = btn.dataset.projectId;
+      openProjectModal(pid);
+    });
+  });
+
+  // Also make clicking project image box open documentation
+  const projectCards = document.querySelectorAll('.project-card');
+  projectCards.forEach(card => {
+    const imgBox = card.querySelector('.project-image-box');
+    const pid = card.dataset.projectId;
+    if (imgBox && pid) {
+      imgBox.style.cursor = 'pointer';
+      imgBox.addEventListener('click', () => {
+        const btn = card.querySelector('.project-view-btn');
+        previousProjectTrigger = btn || imgBox;
+        openProjectModal(pid);
+      });
+    }
+  });
+
+  if (projectModalClose) {
+    projectModalClose.addEventListener('click', closeProjectModal);
+  }
+
+  if (projectModalBackdrop) {
+    projectModalBackdrop.addEventListener('click', closeProjectModal);
+  }
+
+  if (projectModalInquireBtn) {
+    projectModalInquireBtn.addEventListener('click', () => {
+      closeProjectModal();
+      openDialog();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && projectModal && projectModal.classList.contains('is-active')) {
+      closeProjectModal();
+    }
+  });
 
   // 5. Accessible Consultation Form Validation (B9 & B10)
   if (consultationForm) {
