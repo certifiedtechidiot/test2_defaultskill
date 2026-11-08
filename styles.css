@@ -1342,29 +1342,36 @@ ul, ol {
   line-height: 16px;
 }
 
-.project-view-btn {
+.project-view-trigger {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-75);
-  background: transparent;
-  border: none;
-  padding: var(--spacing-50) var(--spacing-75);
+  justify-content: center;
+  gap: var(--spacing-50);
+  background-color: var(--color-bg-accent-subtle);
+  color: var(--color-text-accent);
+  border: 1px solid var(--color-border-accent);
+  padding: var(--spacing-75) var(--spacing-150);
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-text-accent);
   white-space: nowrap;
   cursor: pointer;
-  border-radius: var(--radius-base);
-  transition: color var(--duration-interaction) ease, transform var(--duration-interaction) ease;
+  border-radius: var(--radius-full);
+  transition: background-color var(--duration-interaction) ease, color var(--duration-interaction) ease, border-color var(--duration-interaction) ease, transform var(--duration-interaction) ease;
 }
 
-.project-view-btn:hover {
-  color: var(--color-bg-accent-hover);
-  transform: translateX(2px);
+.project-view-trigger:hover {
+  background-color: var(--color-bg-accent);
+  color: var(--color-text-dark);
+  border-color: var(--color-bg-accent);
+  transform: translateY(-1px);
 }
 
-.project-view-btn:focus-visible {
+.project-view-trigger:active {
+  transform: translateY(0);
+}
+
+.project-view-trigger:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
@@ -1804,15 +1811,83 @@ ul, ol {
   border-top: 1px solid var(--color-border-subtle);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .project-modal {
+    padding: var(--spacing-100);
+    align-items: center;
+  }
+
+  .project-modal-window {
+    max-height: calc(100dvh - 36px);
+    max-height: calc(100vh - 36px);
+    border-radius: var(--radius-2xl);
+    margin: auto;
+  }
+
+  .project-modal-media {
+    height: 200px;
+    border-top-left-radius: var(--radius-2xl);
+    border-top-right-radius: var(--radius-2xl);
+  }
+
+  .project-modal-close {
+    top: var(--spacing-150);
+    right: var(--spacing-150);
+    width: 36px;
+    height: 36px;
+    z-index: 20;
+  }
+
+  .project-modal-body {
+    padding: var(--spacing-300) var(--spacing-200) var(--spacing-200);
+    gap: var(--spacing-200);
+  }
+
+  .project-modal-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-50);
+    padding-right: 52px;
+  }
+
+  .project-modal-title {
+    font-size: 22px;
+    line-height: 1.25;
+  }
+
+  .project-modal-valuation {
+    font-size: 20px;
+    line-height: 1.2;
+    color: var(--color-text-accent);
+  }
+
+  .project-modal-summary {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
   .project-modal-specs-grid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-150);
+    margin-top: var(--spacing-50);
   }
-  .project-modal-media {
-    height: 220px;
+
+  .project-spec-card {
+    padding: var(--spacing-150);
   }
-  .project-modal-body {
-    padding: var(--spacing-300) var(--spacing-200);
+
+  .project-modal-actions {
+    padding-top: var(--spacing-200);
+    padding-bottom: var(--spacing-300);
+  }
+
+  .project-modal-actions .btn-primary {
+    width: 100%;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
   }
 }
 

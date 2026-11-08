@@ -298,8 +298,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.overflow = 'hidden';
     if (lenisInstance) lenisInstance.stop();
 
+    const modalWindow = projectModal.querySelector('.project-modal-window');
+    if (modalWindow) {
+      modalWindow.scrollTop = 0;
+    }
+
     if (projectModalClose) {
-      projectModalClose.focus();
+      projectModalClose.focus({ preventScroll: true });
     }
   };
 
